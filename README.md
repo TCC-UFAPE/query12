@@ -2,7 +2,7 @@
 
 ## Descrição
 
-A **Query11** é um script Python que combina as funcionalidades das queries 7 e 10 para realizar uma análise abrangente das vulnerabilidades do projeto **iz**, integrando dados de documentação com informações detalhadas dos commits do GitHub.
+A **Query11** é um script Python que combina as funcionalidades das queries 7 e 10 para realizar uma análise abrangente das vulnerabilidades do projeto **Struts**, integrando dados de documentação com informações detalhadas dos commits do GitHub.
 
 ## Funcionalidades
 
