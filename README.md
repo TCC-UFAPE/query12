@@ -1,8 +1,8 @@
-# Query11 - Análise Completa de Vulnerabilidades do SystemD
+# Query11 - Análise Completa de Vulnerabilidades do Struts
 
 ## Descrição
 
-A **Query11** é um script Python que combina as funcionalidades das queries 7 e 10 para realizar uma análise abrangente das vulnerabilidades do projeto **SystemD**, integrando dados de documentação com informações detalhadas dos commits do GitHub.
+A **Query11** é um script Python que combina as funcionalidades das queries 7 e 10 para realizar uma análise abrangente das vulnerabilidades do projeto **iz**, integrando dados de documentação com informações detalhadas dos commits do GitHub.
 
 ## Funcionalidades
 
@@ -11,19 +11,19 @@ A **Query11** é um script Python que combina as funcionalidades das queries 7 e
 #### 1. Contagem de Vulnerabilidades por Projeto
 - Conta o total de vulnerabilidades documentadas
 - Identifica vulnerabilidades curadas (com descrição completa)
-- **Filtro**: Apenas projeto SystemD
+- **Filtro**: Apenas projeto Struts
 - **Arquivo gerado**: `1_2_vulnerabilidades_por_projeto.xlsx`
 
 #### 2. Análise de Vulnerabilidades por Tipo
 - Classifica vulnerabilidades por tags/tipos
 - Agrupa por projeto
-- **Filtro**: Apenas projeto SystemD
+- **Filtro**: Apenas projeto Struts
 - **Arquivo gerado**: `3_vulnerabilidades_por_tipo.xlsx`
 
 #### 3. Análise de Vulnerabilidades por Lição
 - Identifica lições aprendidas (tags começando com "Lesson:")
 - Conta ocorrências por projeto
-- **Filtro**: Apenas projeto SystemD
+- **Filtro**: Apenas projeto Struts
 - **Arquivo gerado**: `4_vulnerabilidades_por_licao.xlsx`
 
 #### 4. Análise Completa de Tokens (Documentação + GitHub)
@@ -47,7 +47,7 @@ O arquivo `5_analise_completa_tokens.xlsx` contém:
 
 | Coluna | Descrição |
 |--------|-----------|
-| Projeto | Nome do projeto (systemd) |
+| Projeto | Nome do projeto (Struts) |
 | CVE | Identificador da vulnerabilidade |
 | Repositório GitHub | URL do repositório no GitHub |
 | Caracteres Totais (Documentação) | Total de caracteres na descrição |
@@ -91,7 +91,7 @@ python query11.py
    - Tags/Tipos
    - Informações dos projetos
 
-2. **Filtra vulnerabilidades** do SystemD
+2. **Filtra vulnerabilidades** do Struts
 
 3. **Executa análises**:
    - Tarefas 1-2: Contagem de vulnerabilidades
@@ -120,7 +120,7 @@ Ao final da execução, o script exibe:
 
 A Query11 se destaca por:
 - ✅ **Integração completa** entre documentação textual e código fonte
-- ✅ **Análise focada** no projeto SystemD
+- ✅ **Análise focada** no projeto Struts
 - ✅ **Métricas detalhadas** de tamanho e complexidade
 - ✅ **Dados reais** via API do GitHub (não aproximações)
 - ✅ **Visão 360°** de cada vulnerabilidade
