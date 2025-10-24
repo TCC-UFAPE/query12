@@ -171,7 +171,7 @@ def count_tokens_from_github_commit(commit_data, session):
 
 def run_task_1_and_2(vulnerabilities):
     print("\n--- Iniciando Tarefa 1 & 2: Contagem de Vulnerabilidades por Projeto ---")
-    print("   [FILTRO ATIVO] Processando apenas projeto SYSTEMD")
+    print("   [FILTRO ATIVO] Processando apenas projeto struts")
     
     project_counts = {}
     for vuln in vulnerabilities:
@@ -197,7 +197,7 @@ def run_task_1_and_2(vulnerabilities):
 
 def run_task_3_and_4(vulnerabilities, tags_map):
     print("\n--- Iniciando Tarefa 3 & 4: Vulnerabilidades por Tipo e por Lição ---")
-    print("   [FILTRO ATIVO] Processando apenas projeto SYSTEMD")
+    print("   [FILTRO ATIVO] Processando apenas projeto struts")
 
     types_by_project = {}
     lessons_by_project = {}
@@ -238,7 +238,7 @@ def run_task_3_and_4(vulnerabilities, tags_map):
 
 def run_task_5_with_github_tokens(vulnerabilities, project_to_repo):
     print("\n--- Iniciando Tarefa 5: Análise de Texto com Tokens do GitHub ---")
-    print("   [FILTRO ATIVO] Processando apenas projeto SYSTEMD")
+    print("   [FILTRO ATIVO] Processando apenas projeto struts")
     
     session = requests.Session()
     text_data = []
@@ -329,21 +329,21 @@ if __name__ == "__main__":
     all_vulnerabilities, all_tags_map, project_to_repo = get_all_data()
     
     if all_vulnerabilities and all_tags_map:
-        # Filtrar apenas vulnerabilidades do systemd
-        systemd_vulns = [v for v in all_vulnerabilities if v.get('project_name', '').lower() == 'systemd']
-        print(f"\n[FILTRO] {len(systemd_vulns)} vulnerabilidades do systemd de {len(all_vulnerabilities)} totais")
+        # Filtrar apenas vulnerabilidades do struts
+        struts_vulns = [v for v in all_vulnerabilities if v.get('project_name', '').lower() == 'struts']
+        print(f"\n[FILTRO] {len(struts_vulns)} vulnerabilidades do struts de {len(all_vulnerabilities)} totais")
         
-        if not systemd_vulns:
-            print("\n[ERRO] Nenhuma vulnerabilidade do systemd encontrada.")
+        if not struts_vulns:
+            print("\n[ERRO] Nenhuma vulnerabilidade do struts encontrada.")
         else:
-            # Executar tarefas da query7 apenas com systemd
-            run_task_1_and_2(systemd_vulns)
+            # Executar tarefas da query7 apenas com struts
+            run_task_1_and_2(struts_vulns)
             time.sleep(1)
-            run_task_3_and_4(systemd_vulns, all_tags_map)
+            run_task_3_and_4(struts_vulns, all_tags_map)
             time.sleep(1)
             
-            # Executar análise combinada (query7 + query10) apenas com systemd
-            run_task_5_with_github_tokens(systemd_vulns, project_to_repo)
+            # Executar análise combinada (query7 + query10) apenas com struts
+            run_task_5_with_github_tokens(struts_vulns, project_to_repo)
             
             print("\n[SUCESSO] Todas as tarefas foram concluídas!")
     else:
