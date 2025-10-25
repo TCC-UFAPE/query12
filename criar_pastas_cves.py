@@ -4,6 +4,7 @@ import re
 import requests
 import time
 import base64
+import json
 
 GITHUB_TOKEN = ""
 GITHUB_API_BASE = "https://api.github.com"
@@ -140,7 +141,7 @@ def process_commit_files(repo_full_name, commit_hash, commit_folder, session):
                     f.write(f"Arquivo: {filename}\n")
                     f.write(f"Commit: {commit_hash}\n")
                 files_downloaded += 1
-                print(f"         🗑 {filename} (deletado)")
+                print(f"         {filename} (deletado)")
                 continue
             
             # Baixar o conteúdo COMPLETO do arquivo após o commit
@@ -154,16 +155,16 @@ def process_commit_files(repo_full_name, commit_hash, commit_folder, session):
                     f.write(file_content)
                 
                 files_downloaded += 1
-                print(f"         ✓ {filename}")
+                print(f"         {filename}")
             else:
-                print(f"         ⚠ {filename} (não foi possível baixar)")
+                print(f"         {filename} (não foi possível baixar)")
             
             time.sleep(0.1)  # Pausa entre arquivos
         
         return files_downloaded
         
     except Exception as e:
-        print(f"         ✗ Erro ao processar commit: {e}")
+        print(f"         Erro ao processar commit: {e}")
         return 0
 
 
@@ -185,7 +186,7 @@ def create_cve_folders_from_excel(excel_file="5_analise_completa_tokens.xlsx", b
     
     try:
         df = pd.read_excel(excel_file)
-        print(f"✓ Arquivo carregado com sucesso!")
+        print(f"Arquivo carregado com sucesso!")
         print(f"  • Total de linhas: {len(df)}")
         print(f"  • Colunas: {list(df.columns)}\n")
         
@@ -195,7 +196,7 @@ def create_cve_folders_from_excel(excel_file="5_analise_completa_tokens.xlsx", b
         
         # Criar pasta base
         os.makedirs(base_folder, exist_ok=True)
-        print(f"✓ Pasta base '{base_folder}' pronta\n")
+        print(f"Pasta base '{base_folder}' pronta\n")
         
         session = requests.Session()
         
@@ -229,13 +230,13 @@ def create_cve_folders_from_excel(excel_file="5_analise_completa_tokens.xlsx", b
             
             # Se tiver repositório, baixar arquivos dos commits
             if pd.notna(repo) and repo != 'N/A':
-                print(f"   📦 Repositório: {repo}")
+                print(f"   Repositório: {repo}")
                 
                 # Buscar commits relacionados
                 commit_hashes = get_commit_hashes_from_vulnerability(cve, session)
                 
                 if commit_hashes:
-                    print(f"   🔍 {len(commit_hashes)} commit(s) encontrado(s)")
+                    print(f"   [{len(commit_hashes)} commit(s) encontrado(s)]")
                     
                     for c_idx, commit_hash in enumerate(commit_hashes, 1):
                         print(f"      [{c_idx}/{len(commit_hashes)}] Commit {commit_hash[:8]}...")
@@ -250,13 +251,13 @@ def create_cve_folders_from_excel(excel_file="5_analise_completa_tokens.xlsx", b
                         
                         if files_count > 0:
                             total_files_downloaded += files_count
-                            print(f"         ✓ {files_count} arquivo(s) baixado(s)")
+                            print(f"         [OK] {files_count} arquivo(s) baixado(s)")
                         
                         time.sleep(0.3)  # Pausa entre commits
                 else:
-                    print(f"   ℹ Nenhum commit encontrado")
+                    print(f"   [INFO] Nenhum commit encontrado")
             else:
-                print(f"   ℹ Sem repositório associado")
+                print(f"   [INFO] Sem repositório associado")
             
             print()
             time.sleep(0.2)
@@ -286,7 +287,7 @@ def create_readme_for_cve(row, cve_folder):
         with open(readme_path, 'w', encoding='utf-8') as f:
             cve = row.get('CVE', 'N/A')
             f.write(f"# {cve}\n\n")
-            f.write(f"## 📋 Informações Gerais\n\n")
+            f.write(f"## Informações Gerais\n\n")
             
             info_fields = {
                 'Projeto': row.get('Projeto', 'N/A'),
@@ -305,7 +306,7 @@ def create_readme_for_cve(row, cve_folder):
             for key, value in info_fields.items():
                 f.write(f"**{key}:** {value}\n\n")
             
-            f.write(f"\n## 📁 Estrutura de Arquivos\n\n")
+            f.write(f"\n## Estrutura de Arquivos\n\n")
             f.write(f"Esta pasta contém:\n\n")
             f.write(f"- `README.md`: Este arquivo com informações do CVE\n")
             f.write(f"- `[hash do commit]/`: Pastas com o hash completo de cada commit relacionado\n\n")
