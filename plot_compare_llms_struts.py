@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 EXCEL_FILE = 'Relatorio_Analise_CVEs_LLM.xlsx'
-OUTPUT_PNG = 'comparativo_llms_systemd.png'
+OUTPUT_PNG = 'comparativo_llms_struts.png'
 
 # Ler todas as abas do Excel usando header=1 (a segunda linha contém os nomes das colunas nas planilhas geradas)
 xls = pd.read_excel(EXCEL_FILE, sheet_name=None, header=1, engine='openpyxl')
@@ -46,36 +46,36 @@ print(f'  CVE coluna: {cve_col}')
 print(f'  Arquivos coluna: {files_col}')
 print(f'  Vulnerabilidade coluna: {vuln_col}')
 
-# Construir máscara para systemd: procurar 'systemd' em CVE ou Arquivos Analisados quando existirem
+# Construir máscara para struts: procurar 'struts' em CVE ou Arquivos Analisados quando existirem
 if cve_col is not None:
-    mask_cve = all_df[cve_col].astype(str).str.contains('systemd', case=False, na=False)
+    mask_cve = all_df[cve_col].astype(str).str.contains('struts', case=False, na=False)
 else:
     mask_cve = pd.Series([False]*len(all_df))
 
 if files_col is not None:
-    mask_files = all_df[files_col].astype(str).str.contains('systemd', case=False, na=False)
+    mask_files = all_df[files_col].astype(str).str.contains('struts', case=False, na=False)
 else:
     mask_files = pd.Series([False]*len(all_df))
 
 mask = mask_cve | mask_files
 
-systemd_df = all_df[mask].copy()
+struts_df = all_df[mask].copy()
 
-if systemd_df.empty:
-    print('Nenhum CVE relacionado a "systemd" encontrado nas abas. Vou usar todos os dados para gerar um gráfico geral.')
-    systemd_df = all_df.copy()
+if struts_df.empty:
+    print('Nenhum CVE relacionado a "struts" encontrado nas abas. Vou usar todos os dados para gerar um gráfico geral.')
+    struts_df = all_df.copy()
 
 # Normalizar valores da coluna de vulnerabilidade
 vuln_col = None
 for candidate in ['Vulnerabilidade Detectada', 'Vulnerabilidade?', 'Vulnerabilidade']:
-    if candidate in systemd_df.columns:
+    if candidate in struts_df.columns:
         vuln_col = candidate
         break
 
 if vuln_col is None:
     raise SystemExit('Coluna de vulnerabilidade não encontrada nas abas.')
 
-systemd_df[vuln_col] = systemd_df[vuln_col].astype(str).str.upper().str.strip()
+struts_df[vuln_col] = struts_df[vuln_col].astype(str).str.upper().str.strip()
 
 # Classificar respostas simples: YES, NO, ERROR, N/A, OUTROS
 def normalize_vuln(x):
@@ -89,10 +89,10 @@ def normalize_vuln(x):
         return 'N/A'
     return x
 
-systemd_df['Vuln_Normalizada'] = systemd_df[vuln_col].apply(normalize_vuln)
+struts_df['Vuln_Normalizada'] = struts_df[vuln_col].apply(normalize_vuln)
 
 # Agrupar por modelo e status
-group = systemd_df.groupby(['Modelo_Sheet', 'Vuln_Normalizada']).size().reset_index(name='count')
+group = struts_df.groupby(['Modelo_Sheet', 'Vuln_Normalizada']).size().reset_index(name='count')
 
 # Pivot para plot
 pivot = group.pivot(index='Modelo_Sheet', columns='Vuln_Normalizada', values='count').fillna(0)
@@ -107,7 +107,7 @@ colors = sns.color_palette('tab10', n_colors=len(pivot.columns.drop('total')))
 cols_to_plot = [c for c in pivot.columns if c != 'total']
 
 pivot[cols_to_plot].plot(kind='bar', stacked=True, color=colors, width=0.7)
-plt.title('Comparativo de Detecções por LLM (systemd)')
+plt.title('Comparativo de Detecções por LLM (struts)')
 plt.ylabel('Quantidade de análises')
 plt.xlabel('Modelo LLM')
 plt.legend(title='Status')
